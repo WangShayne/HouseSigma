@@ -6,7 +6,7 @@ import IconClose from "./icons/IconClose.vue";
 <template>
   <div class="search">
     <IconSearch />
-    <input type="text" />
+    <input type="text" value="Input Value"/>
     <IconClose />
   </div>
 </template>
@@ -21,7 +21,9 @@ import IconClose from "./icons/IconClose.vue";
   background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   input {
-      flex: 1;
+    flex: 1;
+    font-size: 1rem;
+    font-weight: 500;
     color: #fff;
     background-color: transparent;
     outline: none;

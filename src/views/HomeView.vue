@@ -1,7 +1,32 @@
 <script setup lang="ts">
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import IconReturn from "@/components/icons/IconReturn.vue";
 import Search from "@/components/Search.vue";
 import TopWatch from "@/components/TopWatch.vue";
+import { GoogleMap, Marker, CustomMarker } from "vue3-google-map";
+import IconLocation from "@/components/icons/IconLocation.vue";
+import InfoMarker from "@/components/InfoMarker.vue";
+
+import mapdata from "@/db/mapdata.json";
+console.log(mapdata);
+const mapRef = ref(null);
+
+// 中心点
+const center = { lat: 49.214798, lng: -122.916058 };
+
+// 显示当前位置
+const getLocation = () => {
+  alert("show location");
+};
+
+//
+const saleList = computed(() => {
+  return mapdata.filter((item) => item.status === "sale");
+});
+
+const soldList = computed(() => {
+  return mapdata.filter((item) => item.status === "sold");
+});
 </script>
 
 <template>
@@ -19,12 +44,46 @@ import TopWatch from "@/components/TopWatch.vue";
       <button><span>Filters</span></button>
     </div>
   </header>
-  <main>hello world</main>
+  <main>
+    <div class="status-btns">
+      <button class="sale"><span>For Sale</span></button>
+      <button class="sold">
+        <span>Sold</span>
+      </button>
+      <button class="other"><span>De-listed</span></button>
+    </div>
+    <GoogleMap
+      class="googleMap"
+      ref="mapRef"
+      api-key="AIzaSyA1Krb9T9-F1KMysusQqc3b_Hk6YRL-0YU"
+      style="width: 100%; height: calc(100vh - 100px)"
+      :center="center"
+      :zoom="14"
+      disableDefaultUi
+    >
+      <button class="customBtn" @click="getLocation">
+        <IconLocation />
+      </button>
+      <CustomMarker
+        v-for="item in saleList"
+        :key="item.id"
+        :options="{
+          position: { lat: item.location?.lat, lng: item.location?.lon },
+          anchorPoint: 'BOTTOM_CENTER',
+        }"
+      >
+        <InfoMarker :status="item.status">
+          <span>{{ item.label }}</span>
+        </InfoMarker>
+      </CustomMarker>
+    </GoogleMap>
+  </main>
 </template>
 
 <style lang="scss" scoped>
 header {
-  padding: 1rem;
+  padding: 0.5rem 1rem;
+  height: 100px;
   background-color: $theme-color;
   .nav-and-search {
     display: flex;
@@ -93,6 +152,48 @@ header {
           }
         }
       }
+    }
+  }
+}
+main {
+  position: relative;
+  .status-btns {
+    position: absolute;
+    width: auto;
+    top: 1rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    button {
+      padding: 1rem;
+      span {
+        color: #fff;
+      }
+    }
+  }
+  .googleMap {
+    .customBtn {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 47px;
+      width: 47px;
+      border-radius: 50%;
+      border: 0px;
+      margin: 10px;
+      padding: 0px;
+      font-size: 1.25rem;
+      text-transform: none;
+      appearance: none;
+      background: white;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+      overflow: hidden;
+      z-index: 3;
     }
   }
 }
