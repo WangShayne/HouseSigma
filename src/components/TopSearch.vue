@@ -4,15 +4,15 @@ import IconClose from "./icons/IconClose.vue";
 </script>
 
 <template>
-  <div class="search">
+  <div class="topSearch">
     <IconSearch />
-    <input type="text" value="Input Value"/>
+    <input type="text" value="Input Value" />
     <IconClose />
   </div>
 </template>
 
 <style lang="scss" scoped>
-.search {
+.topSearch {
   flex: 1;
   display: flex;
   align-items: center;

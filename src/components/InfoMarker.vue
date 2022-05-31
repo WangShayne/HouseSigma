@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
 
-interface InfoMarkerProps {
-  status: string;
-}
-
-const props = withDefaults(defineProps<InfoMarkerProps>(), {
-  status: "sale",
+const props = defineProps({
+  status: {
+    type: String,
+    default: "sale",
+  },
 });
 </script>
+
 <template>
   <div class="InfoMarker" :class="props.status">
     <div class="slot">
@@ -18,9 +18,6 @@ const props = withDefaults(defineProps<InfoMarkerProps>(), {
 </template>
 
 <style lang="scss" scoped>
-$sale-color: $theme-color;
-$sold-color: #413e6d;
-
 .InfoMarker {
   position: relative;
   padding: 4px 8px;
@@ -61,15 +58,15 @@ $sold-color: #413e6d;
     transform: translate(-50%, 0);
   }
   &.sale {
-    background: $sale-color;
+    background: $theme-color;
     &::after {
-      border-color: $sale-color transparent transparent;
+      border-color: $theme-color transparent transparent;
     }
   }
   &.sold {
-    background: $sold-color;
+    background: $sub-theme-color;
     &::after {
-      border-color: $sold-color transparent transparent;
+      border-color: $sub-theme-color transparent transparent;
     }
   }
 }
